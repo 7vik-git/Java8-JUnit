@@ -1,3 +1,5 @@
+package com.gevernova;
+
 import com.gevernova.invertorymanagment.Product;
 import com.gevernova.invertorymanagment.InventoryService;
 import com.gevernova.invertorymanagment.InvalidProductException;
@@ -10,9 +12,13 @@ import java.util.*;
 
 public class InventoryServiceTest {
     private InventoryService service;
+    private Product product;
 
     @BeforeEach
-    void setUp() { service = new InventoryService(); }
+    void setUp() {
+        service = new InventoryService();
+    }
+
 
     @Test
     void testAddValidProduct() {

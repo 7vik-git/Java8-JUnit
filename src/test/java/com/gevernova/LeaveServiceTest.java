@@ -1,13 +1,25 @@
+package com.gevernova;
+
 import com.gevernova.leavemanagment.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class LeaveServiceTest {
-    LeaveService service = new LeaveService();
-    LeavePolicy basicPolicy = (emp, leave) -> emp.getRemainingLeaves() > 0;
+
+    private LeaveService service;
+    private LeavePolicy basicPolicy;
+
+    @BeforeEach
+    void setUp() {
+        service = new LeaveService();
+        basicPolicy = (emp, leave) -> emp.getRemainingLeaves() > 0;
+    }
 
     @Test
     void testApplyValidLeave() throws Exception {
@@ -21,12 +33,14 @@ public class LeaveServiceTest {
     void testLowBalanceEmployeeFilter() {
         Employee e1 = new Employee("John", 10);
         Employee e2 = new Employee("Doe", 10);
-        for (int i = 0; i < 6; i++) e2.applyLeave(new Leave(LocalDate.now().plusDays(i+1), "Sick"));
+        for (int i = 0; i < 6; i++) {
+            e2.applyLeave(new Leave(LocalDate.now().plusDays(i + 1), "Sick"));
+        }
         List<Employee> lowBalance = service.getLowBalanceEmployees(Arrays.asList(e1, e2));
         assertEquals(1, lowBalance.size());
         assertEquals("Doe", lowBalance.get(0).getName());
     }
-//N
+
     @Test
     void testLeaveLimitExceededThrows() {
         Employee e = new Employee("Bob", 0);

@@ -4,10 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.gevernova.onlinceordering.*;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 
 public class OrderServiceTest {
-    OrderService service = new OrderService();
+
+    private OrderService service;
+
+    @BeforeEach
+    void setUp() {
+        service = new OrderService();
+    }
+
     @Test
     void testValidOrderWithPromoCode() throws Exception {
         User user = new User("Alice", "alice@example.com");
@@ -23,6 +33,7 @@ public class OrderServiceTest {
         assertDoesNotThrow(() -> service.validateOrder(order));
         assertFalse(order.getPromoCode().isPresent());
     }
+
     @Test
     void testOrderWithNullPaymentThrows() {
         User user = new User("Charlie", "charlie@example.com");
@@ -51,3 +62,4 @@ public class OrderServiceTest {
         assertThrows(InvalidAddressException.class, () -> service.validateOrder(order));
     }
 }
+

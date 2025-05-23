@@ -1,16 +1,24 @@
-import static org.junit.jupiter.api.Assertions.*;
+package com.gevernova;
 
+import static org.junit.jupiter.api.Assertions.*;
 import com.gevernova.sudentgrading.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
 public class StudentTest {
 
+    private GradeService service;
+
+    @BeforeEach
+    void setUp() {
+        service = new GradeService();
+    }
+
     @Test
     void testValidStudentAverageAndGrade() throws Exception {
         Student s = new Student("John", "101", Arrays.asList(90, 80, 85));
-        GradeService service = new GradeService();
         String grade = service.getGrade(s, GradingStrategies.basicStrategy);
         assertEquals("A", grade);
         assertEquals(85.0, s.getAverage(), 0.01);
@@ -19,7 +27,6 @@ public class StudentTest {
     @Test
     void testGradeBoundaryB() throws Exception {
         Student s = new Student("Mary", "102", Arrays.asList(70, 72, 74));
-        GradeService service = new GradeService();
         String grade = service.getGrade(s, GradingStrategies.basicStrategy);
         assertEquals("B", grade);
     }
@@ -27,7 +34,6 @@ public class StudentTest {
     @Test
     void testGradeBoundaryC() throws Exception {
         Student s = new Student("Tom", "103", Arrays.asList(50, 55, 52));
-        GradeService service = new GradeService();
         String grade = service.getGrade(s, GradingStrategies.basicStrategy);
         assertEquals("C", grade);
     }
@@ -35,11 +41,9 @@ public class StudentTest {
     @Test
     void testGradeFail() throws Exception {
         Student s = new Student("Jake", "104", Arrays.asList(30, 40, 45));
-        GradeService service = new GradeService();
         String grade = service.getGrade(s, GradingStrategies.basicStrategy);
         assertEquals("Fail", grade);
     }
-
 
     @Test
     void testEmptyMarkListThrows() {
